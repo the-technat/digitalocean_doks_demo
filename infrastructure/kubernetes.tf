@@ -7,9 +7,11 @@ module "kubernetes" {
   region = "fra1"
 
   # find version using `doctl kubernetes options versions`
-  kubernetes_version = "1.21.9"
-  auto_upgrade       = true
-  size               = "s-2vcpu-4gb"
+  kubernetes_version            = "1.21.9"
+  auto_upgrade                  = true
+  maintenance_policy_start_time = "15:00"
+  maintenance_policy_day        = "sunday"
+  size                          = "s-2vcpu-4gb"
 
   auto_scale = true
   min_nodes  = 1
