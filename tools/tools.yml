@@ -17,7 +17,7 @@
     register: doks
   - name: Write kubeconfig to file
     copy:
-      content: "{{ doks.data.kubeconfig | to_nice_yaml }}"
+      content: "{{ doks.data.kubeconfig }}"
       dest: "{{ kubeconfig_path }}"
       mode: 0600
   - name: Show kubeconfig
