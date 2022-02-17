@@ -15,13 +15,16 @@ txtOwnerId: "{{ txtOwnerId }}"
 # txtPrefix: ""
 # txtSuffix: ""
 
-domainFilters: "{{ domainFilters }}"
+domainFilters:
+  {% for domain in domainFilters %}
+  - "{{ domain }}"
+  {% endfor %}
 
-provider: digitalocean
+provider: hetzner
 
 env:
-  - name: DO_TOKEN
-    value: "{{ do_api_token }}"
+  - name: HETZNER_TOKEN
+    value: "{{ hetzner_dns_token }}"
 
 resources:
   limits:
