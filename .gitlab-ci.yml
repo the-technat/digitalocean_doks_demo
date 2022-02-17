@@ -18,8 +18,7 @@ variables:
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/prod
   TF_VAR_do_token: ${do_token}
 
-  ANSIBLE_CONFIG: ${ANSIBLE_ROOT}
-  ANSIBLE_CONFIG: ${CI_PROJECT_DIR}/ansible.cfg
+  ANSIBLE_CONFIG: ${ANSIBLE_ROOT}/ansible.cfg
 
 cache:
   key: digitalocean_doks_demo
