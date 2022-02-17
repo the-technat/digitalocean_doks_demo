@@ -61,9 +61,8 @@ validate:
 yamllint:
   <<: *common_ansible
   stage: validate
-  variables:
   script:
-    - yamllint --strict .
+    - ansible-lint -v --show-relpath --parseable-severity --nocolor tools.yml
 
 plan:
   <<: *common_terraform
