@@ -4,17 +4,23 @@
   vars:
     domainFilters: ['alleaffengaffen.ch'] # Domains external-dns shall manage
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
+    cluster_name: 'alleaffengaffen'
+    kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     do_api_token: '' # override with ansible_vault file
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
       oauth_token: "{{ lookup('ansible.builtin.env', 'DO_API_TOKEN') }}"
-      name: alleaffengaffen
+      name: "{{ cluster_name }}"
       return_kubeconfig: yes
-    register: alleaffengaffen
+    register: doks
+  - name: Write kubeconfig to file
+    copy:
+      content: "{{ doks.data.kubeconfig | to_nice_yaml }}"
+      dest: "{{ kubeconfig_path }}"
   - name: Deploy external-dns helm chart
     kubernetes.core.helm:
-      kubeconfig: "{{ alleaffengaffen.data.kubeconfig }}"
+      kubeconfig_path: "{{ kubeconfig_path }}"
       chart_repo_url: "https://kubernetes-sigs.github.io/external-dns/"
       chart_ref: external-dns
       chart_version: 1.7.1
