@@ -2,7 +2,7 @@ module "kubernetes" {
   source  = "nlamirault/doks/digitalocean"
   version = "v0.3.0"
 
-  cluster_name = "alleaffengaffen_ch"
+  cluster_name = "alleaffengaffen"
 
   region = "fra1"
 
