@@ -1,0 +1,109 @@
+---
+# Taken from https://github.com/ReinerNippes/nextcloud/blob/master/roles/prep_nextcloud/tasks/main.yml
+# - name: generate admin passwd if nextcloud_passwd is empty
+#   set_fact:
+#     nc_passwd: "{{ lookup('password', '{{ credential_store }}/nextcloud_admin_secret chars=ascii_letters,digits length=32') }}"
+#   when: nc_passwd == ''
+- name: Download Nextcloud Archive 
+  get_url:
+    url:  "{{ next_archive }}"
+    dest: /tmp/nextcloud.tar.bz2
+    checksum: "sha256:{{ next_archive }}.sha256"
+- name: Ensure Nextcloud files are present
+  unarchive: 
+    src: /tmp/nextcloud.tar.bz2
+    dest: "/var/www"
+    remote_src: true
+    creates: /var/www/nextcloud/occ
+- name: Ensure permissions on webroot
+  file:
+    dest: "/var/www/nextcloud"
+    owner: "{{ web_user }}"
+    group: "{{ web_user }}"
+    mode: '770'
+    recurse: yes
+  notify: restart nginx
+- name: Ensure permissions on data dir
+  file:
+    dest: "{{ data_dir }}"
+    owner: "{{ web_user }}"
+    group: "{{ web_user }}"
+    mode: '770'
+    recurse: yes
+- name: Flush handlers
+  meta: flush_handlers
+- name: Verify if Nextcloud is installed
+  become: yes
+  become_user: "{{ web_user }}"
+  register: install_status
+  shell: php occ status 
+  changed_when: false # task only checks something, doesn't run an action
+  args:
+    chdir: "/var/www/nextcloud"
+- name: Install Nextcloud
+  become: yes
+  become_user: "{{ web_user }}"
+  shell: >
+    php occ maintenance:install 
+    --database "mysql"
+    --database-host "localhost:3306" 
+    --database-name {{ nc_db }} 
+    --database-user {{ nc_db_user }} 
+    --database-pass {{ nc_db_password }} 
+    --admin-user {{ nc_admin }} 
+    --admin-pass {{ nc_passwd }} 
+    --data-dir {{ data_dir }}
+  when: 'install_status.stdout.find("installed: false") != -1'
+  args:
+    chdir: "/var/www/nextcloud"
+  register: setup_nc
+  notify: restart nginx
+- name: Gather Nextcloud config
+  become: yes
+  become_user: "{{ web_user }}"
+  register: nc_config
+  shell: php occ config:list --output=json 
+  changed_when: false # task only reads something, doesn't run an action
+  args:
+    chdir: /var/www/nextcloud
+- name: Nextcloud cronjob registered 
+  cron:
+    name: nextcloud cronjob
+    minute: '*/5'
+    user: "{{ web_user }}" 
+    job: 'php -f /var/www/nextcloud/cron.php > /dev/null 2>&1'
+- name: Set background jobs to cron
+  become: yes
+  become_user: "{{ web_user }}"
+  shell: php occ background:cron
+  args:
+    chdir: "/var/www/nextcloud/"
+  when: nc_config.stdout|from_json|json_query('apps.core.backgroundjobs_mode') != "cron"
+- name: config.json templated and ready
+  template:
+    src: config.json.j2
+    dest: "/tmp/nextcloud.config.json"
+    owner: "{{ web_user }}"
+    group: "{{ web_user }}"
+    mode: 0600
+- name: config.json imported
+  become: yes
+  become_user: "{{ web_user }}"
+  shell: php occ config:import /tmp/nextcloud.config.json
+  args:
+    chdir: "/var/www/nextcloud"
+  register: nc_config_import
+  notify: restart redis
+- name: config.json removed from tmp
+  file:
+    name: /tmp/nextcloud.config.json
+    state: absent
+- name: run DB migration jobs
+  become: yes
+  become_user: "{{ web_user }}"
+  shell: php occ {{ item }}
+  args:
+    chdir: "/var/www/nextcloud/"
+  loop:
+  - db:add-missing-indices 
+  - db:convert-filecache-bigint

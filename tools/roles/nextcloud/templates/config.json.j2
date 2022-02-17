@@ -1,0 +1,21 @@
+{
+  "system": {
+    "memcache.local": "\\OC\\Memcache\\Redis",
+    "memcache.locking": "\\OC\\Memcache\\Redis",
+    "memcache.distributed": "\\OC\\Memcache\\Redis",
+    "redis": {
+        "host": "{{ redis_socket_path }}",
+        "port": "0",
+        "timeout": "1.5",
+        "password": "",
+        "dbindex": "0"
+    },
+    "trusted_domains": [
+      "{{ fqdn }}"
+    ],
+    "updater.release.channel": "stable",
+    "default_phone_region": "CH",
+    "mysql.utf8mb4": "true",
+    "overwrite.cli.url": "https://{{ fqdn }}"
+  }
+}

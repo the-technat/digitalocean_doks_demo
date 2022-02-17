@@ -1,0 +1,105 @@
+# Ref: https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
+
+image: registry.gitlab.com/k8s_at_hetzner/ci-image:master
+
+stages:
+  - prepare
+  - validate
+  - deploy
+  - configure
+  - destroy
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/infrastructure
+  ANSIBLE_ROOT: ${CI_PROJECT_DIR}/tools
+
+  LANG: C.UTF-8
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/prod
+  TF_VAR_do_token: ${do_token}
+
+  ANSIBLE_CONFIG: ${ANSIBLE_ROOT}
+  ANSIBLE_CONFIG: ${CI_PROJECT_DIR}/ansible.cfg
+
+cache:
+  key: digitalocean_doks_demo
+  paths:
+    - ${TF_ROOT}/.terraform
+    - .cache/pip
+    - venv/
+ 
+.common_ansible: &common_ansible
+  before_script:
+    - python3 -V
+    - virtualenv venv
+    - source venv/bin/activate
+    - cd ${ANSIBLE_ROOT}
+      
+.common_ansible: &common_terraform
+  before_script:
+    - terraform --version
+    - cd ${TF_ROOT}
+
+init:
+  <<: *common_terraform
+  stage: prepare
+  script:
+    - gitlab-terraform init
+
+setup:
+  <<: *common_ansible
+  stage: prepare
+  script:
+    - pip install -r requirements.txt
+    - ansible-galaxy install -r requirements.yaml
+
+validate:
+  <<: *common_terraform
+  stage: validate
+  script:
+    - gitlab-terraform validate
+
+# yamllint:
+#   <<: *common_ansible
+#   stage: validate
+#   variables:
+#   script:
+#     - yamllint --strict .
+
+plan:
+  <<: *common_terraform
+  stage: build
+  script:
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: plan
+    paths:
+      - ${TF_ROOT}/plan.cache
+    reports:
+      terraform: ${TF_ROOT}/plan.json
+
+apply:
+  <<: *common_terraform
+  stage: deploy
+  script:
+    - gitlab-terraform apply
+  dependencies:
+    - plan
+
+# configure:
+#   <<: *common_ansible
+#   stage: deploy
+#   dependencies:
+#     - apply
+#   variables:
+#     DO_TOKEN: ${do_token}
+#   script:
+#     - ansible-playbook tools.yml -v --vault-password-file=$ansible_vault_password -e "@secrets.yml"
+
+# Allow for destroy by scheduling the destroy job (after every apply)
+destroy:
+  <<: *common_terraform
+  stage: destroy
+  when: manual
+  script:
+  - gitlab-terraform destroy

@@ -1,0 +1,51 @@
+---
+# Taken from https://github.com/ReinerNippes/nextcloud/blob/master/roles/prep_php/tasks/main.yml
+
+- name: Ensure php gpg key is present
+  apt_key:
+    url: https://packages.sury.org/php/apt.gpg
+    state: present
+- name: Ensure php APT repo is present
+  apt_repository:
+    repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
+    validate_certs: true
+    update_cache: true
+    state: present
+- name: Ensure php and modules are installed
+  apt:
+    name:
+      - php{{ php_version }}-fpm
+      - php{{ php_version }}-gd
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-imagick
+      - php{{ php_version }}-curl
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-zip
+      - php{{ php_version }}-intl
+      - php{{ php_version }}-mbstring
+      - php{{ php_version }}-bz2
+      - php{{ php_version }}-ldap
+      - php{{ php_version }}-bcmath  
+      - php{{ php_version }}-gmp
+      - php{{ php_version }}-redis
+      - libmagickcore-6.q16-6-extra 
+    autoremove: true
+    state: latest
+- name: nextcloud php-fpm pool present
+  template:
+    src: "nextcloud_pool.conf"
+    dest: "{{ php_pool_conf_dir }}/nextcloud.conf"
+    owner: root
+    group: root
+    mode: 0644
+    force: true
+  notify: restart php-fpm
+- name: Default php-fpm pool removed
+  file:
+    path: "{{ php_pool_conf_dir }}/www.conf"
+    state: absent
+- name: Ensure php-fpm is enabled and running
+  systemd:
+    name: "{{ php_service_name }}"
+    enabled: true
+    state: started
