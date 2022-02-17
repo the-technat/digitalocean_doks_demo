@@ -6,7 +6,7 @@
       - "alleaffengaffen.ch" # Domains external-dns shall manage
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
     cluster_name: 'alleaffengaffen'
-    kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
+    kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
     # dhParam: '' # openssl dhparam 4096 2> /dev/null | base64
     # do_api_token: '' # override with ansible_vault file
