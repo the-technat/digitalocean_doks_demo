@@ -42,16 +42,16 @@
       release_namespace: cert-manager
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/cert-manager.yaml') | from_yaml }}"
-  - name: Create letsencrypt staging cluster issuer
-    kubernetes.core.k8s:
-      kubeconfig: "{{ kubeconfig_path }}"
-      apply: yes
-      template: "files/letsencrypt-staging.yaml"
-  - name: Create letsencrypt production cluster issuer
-    kubernetes.core.k8s:
-      kubeconfig: "{{ kubeconfig_path }}"
-      apply: yes
-      template: "files/letsencrypt-production.yaml"
+  # - name: Create letsencrypt staging cluster issuer
+  #   kubernetes.core.k8s:
+  #     kubeconfig: "{{ kubeconfig_path }}"
+  #     apply: yes
+  #     template: "files/letsencrypt-staging.yaml"
+  # - name: Create letsencrypt production cluster issuer
+  #   kubernetes.core.k8s:
+  #     kubeconfig: "{{ kubeconfig_path }}"
+  #     apply: yes
+  #     template: "files/letsencrypt-production.yaml"
   - name: Deploy ingress-nginx helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
