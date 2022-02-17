@@ -29,6 +29,7 @@
       chart_version: 1.7.1
       release_name: external-dns
       release_namespace: external-dns
+      create_namespace: yes
       release_values: "{{ lookup('template', 'values/external-dns.yaml') | from_yaml }}"
   - name: Deploy cert-manager helm chart
     kubernetes.core.helm:
@@ -38,6 +39,7 @@
       chart_version: v1.7.1
       release_name: cert-manager
       release_namespace: cert-manager
+      create_namespace: yes
       release_values: "{{ lookup('template', 'values/cert-manager.yaml') | from_yaml }}"
   - name: Create cert-manager cluster issuers
     kubernetes.core.k8s:
