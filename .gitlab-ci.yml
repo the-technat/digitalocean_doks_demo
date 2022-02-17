@@ -33,6 +33,8 @@ cache:
     - virtualenv venv
     - source venv/bin/activate
     - cd ${ANSIBLE_ROOT}
+    - pip install -r requirements.txt
+    - ansible-galaxy install -r requirements.yml
       
 .common_ansible: &common_terraform
   before_script:
