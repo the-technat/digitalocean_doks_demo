@@ -24,8 +24,8 @@ cache:
   key: digitalocean_doks_demo
   paths:
     - ${TF_ROOT}/.terraform
-    - .cache/pip
-    - venv/
+    - $HOME/.cache/pip
+    - $HOME/venv/
  
 .common_ansible: &common_ansible
   before_script:
@@ -58,7 +58,7 @@ validate:
   script:
     - gitlab-terraform validate
 
-yamllint:
+ansible_lint:
   <<: *common_ansible
   stage: validate
   script:

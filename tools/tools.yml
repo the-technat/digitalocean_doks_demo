@@ -10,10 +10,11 @@
       name: alleaffengaffen
       return_kubeconfig: yes
     register: alleaffengaffen
-  - ansible.builtin.debug:
-    msg: "Cluster name is {{ alleaffengaffen.data.name }}, ID is {{ alleaffengaffen.data.id }}"
-  - ansible.builtin.debug:
-    msg: "Cluster kubeconfig is {{ my_cluster.data.kubeconfig }}"
+  - name: Cluster information
+    debug:
+      msg:
+        - "Cluster name is {{ alleaffengaffen.data.name }}, ID is {{ alleaffengaffen.data.id }}"
+        - "Cluster kubeconfig is {{ alleaffengaffen.data.kubeconfig }}"
   post_tasks:
     - name: We are ready
       debug:
