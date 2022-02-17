@@ -1,6 +1,6 @@
 # Ref: https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
 
-image: registry.gitlab.com/k8s_at_hetzner/ci-image:master
+image: registry.code.immerda.ch/k8s_at_hetzner/ci-image:master
 
 stages:
   - prepare
