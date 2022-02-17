@@ -44,13 +44,15 @@
       release_values: "{{ lookup('template', 'values/cert-manager.yaml') | from_yaml }}"
   - name: Create letsencrypt staging cluster issuer
     kubernetes.core.k8s:
-      kubeconfig: "{{ doks.data.kubeconfig }}"
+      kubeconfig: "{{ kubeconfig_path }}"
       state: present
+      apply: yes
       src: "{{ lookup('template', 'files/letsencrypt-staging.yaml') | from_yaml }}"
   - name: Create letsencrypt production cluster issuer
     kubernetes.core.k8s:
-      kubeconfig: "{{ doks.data.kubeconfig }}"
+      kubeconfig: "{{ kubeconfig_path }}"
       state: present
+      apply: yes
       src: "{{ lookup('template', 'files/letsencrypt-production.yaml') | from_yaml }}"
   - name: Deploy ingress-nginx helm chart
     kubernetes.core.helm:
