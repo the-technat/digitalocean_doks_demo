@@ -93,8 +93,7 @@ configure:
   variables:
     DO_API_TOKEN: ${do_token}
   script:
-    # - ansible-playbook tools.yml -v --vault-password-file=$ansible_vault_password -e "@secrets.yml"
-    - ansible-playbook tools.yml -v
+    - ansible-playbook tools.yml -v --vault-password-file=$ansible_vault_password
 
 # Allow for destroy by scheduling the destroy job (after every apply)
 destroy:

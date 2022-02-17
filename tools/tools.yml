@@ -3,6 +3,7 @@
   hosts: localhost
   vars_files:
   - settings.yml
+  - secrets.yml
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
@@ -10,11 +11,6 @@
       name: alleaffengaffen
       return_kubeconfig: yes
     register: alleaffengaffen
-  - name: Cluster information
-    debug:
-      msg:
-        - "Cluster name is {{ alleaffengaffen.data.name }}, ID is {{ alleaffengaffen.data.id }}"
-        - "Cluster kubeconfig is {{ alleaffengaffen.data.kubeconfig }}"
   - name: Deploy external-dns helm chart
     kubernetes.core.helm:
       kubeconfig: "{{ alleaffengaffen.data.kubeconfig }}"
