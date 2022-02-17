@@ -18,6 +18,7 @@
     copy:
       content: "{{ doks.data.kubeconfig | to_nice_yaml }}"
       dest: "{{ kubeconfig_path }}"
+      mode: 0600
   - name: Deploy external-dns helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
