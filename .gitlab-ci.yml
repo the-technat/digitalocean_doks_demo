@@ -24,7 +24,6 @@ variables:
   VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
-  key: digitalocean_doks_demo
   paths:
     - ${TF_ROOT}/.terraform
     - ${PIP_CACHE_DIR}
