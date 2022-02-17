@@ -2,12 +2,13 @@
 - name: Infrastructure Tools
   hosts: localhost
   vars:
-    domainFilters: ['alleaffengaffen.ch'] # Domains external-dns shall manage
+    domainFilters:
+      - 'alleaffengaffen.ch' # Domains external-dns shall manage
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
-    do_api_token: '' # override with ansible_vault file
+    # do_api_token: '' # override with ansible_vault file
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
@@ -20,8 +21,6 @@
       content: "{{ doks.data.kubeconfig }}"
       dest: "{{ kubeconfig_path }}"
       mode: 0600
-  - name: Show kubeconfig
-    command: cat /root/kubeconfig
   - name: Deploy external-dns helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"

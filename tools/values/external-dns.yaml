@@ -20,7 +20,7 @@ domainFilters: "{{ domainFilters }}"
 provider: digitalocean
 
 env:
-  DO_TOKEN: "{{ do_api_token }}"
+  - DO_TOKEN: "{{ do_api_token }}"
 
 resources:
   limits:
