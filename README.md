@@ -44,6 +44,7 @@ There is always a way to improve:
 - [ ] Deploy cert-manager cluster-issuers with ansible (fails currently)
 - [ ] Use one ingress for argocd that passes SSL traffic to argocd (for distinction between http and grpc)
 - [ ] Fix PodTopologySpreadContains on argocd pods 
+- [ ] Destroy the helm charts before destroying the cluster (LoadBalancers and volumes aren't tracked by terraform)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
