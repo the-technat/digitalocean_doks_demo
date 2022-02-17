@@ -5,6 +5,7 @@ image: registry.gitlab.com/k8s_at_hetzner/ci-image:master
 stages:
   - prepare
   - validate
+  - plan
   - deploy
   - configure
   - destroy
@@ -67,7 +68,7 @@ validate:
 
 plan:
   <<: *common_terraform
-  stage: build
+  stage: plan
   script:
     - gitlab-terraform plan
     - gitlab-terraform plan-json
