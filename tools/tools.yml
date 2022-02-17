@@ -6,6 +6,7 @@
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
+    letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
     do_api_token: '' # override with ansible_vault file
   tasks:
   - name: Update kubeconfig for cluster
@@ -19,6 +20,8 @@
       content: "{{ doks.data.kubeconfig | to_nice_yaml }}"
       dest: "{{ kubeconfig_path }}"
       mode: 0600
+  - name: Show kubeconfig
+    command: cat /root/kubeconfig
   - name: Deploy external-dns helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
@@ -28,6 +31,19 @@
       release_name: external-dns
       release_namespace: external-dns
       release_values: "{{ lookup('template', 'values/external-dns.yaml') | from_yaml }}"
+  - name: Deploy cert-manager helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://charts.jetstack.io"
+      chart_ref: cert-manager
+      chart_version: v1.7.1
+      release_name: cert-manager
+      release_namespace: cert-manager
+      release_values: "{{ lookup('template', 'values/cert-manager.yaml') | from_yaml }}"
+  - name: Create cert-manager cluster issuers
+    kubernetes.core.k8s:
+      state: present
+      src: "{{ lookup('template', 'values/cluster-issuers.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:
