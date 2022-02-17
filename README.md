@@ -29,15 +29,10 @@ Create a new Repository for your NC instance.
 
 The following CI/CD variables must exist:
 
-- `ansible_private_key`: File containing the private key for ansible
-- `ansible_public_key`: File containing the public key for ansible
-- `hcloud_dns_token`: Masked variable containing a DNS API token for hetzner dns
-- `hcloud_token`: Masked variable containing an API token for Hetzner Cloud
-- `pat_token`: Masked protected variable containing a Private Access Token. You can generate one in your account settings (currently this is the only options to download job artifacts)
+- `do_token`: Masked variable containing an API token for DigitalOcean Cloud
+- `ansible_vault_password`: File variable containing the ansible_vault password used for the `secrets.yml` file
 
 Then copy the files from this repository over to your new repository and edit the `settings.tfvars` as well as the `settings.yml` file to your likings.
-
-Note: For the `nc_passwd` and `nc_db_password` variable it's highly recommended to store them in an ansible-vault file instead of the settings.yml. Here's how you do that:
 
 ```bash
 ansible-vault create secrets.yml
@@ -51,15 +46,7 @@ Once you commit your changes the pipeline should automatically trigger and build
 
 There is always a way to improve:
 
-- [x] Improve secrets management using ansible-vault  
-- [x] Install and configure fail2ban
-- [ ] Make sure ansible only imports the config when values have changed
-- [ ] Nextcloud installation and configuration sometimes fails when wrong values are configured
-- [ ] Test durability when changing default values
-- [ ] Run Nextcloud upgrades if necessary
-- [ ] Run NC App upgrades if necessary
-- [ ] Configure backup solution to s3 with configurable endpoint
-- [ ] Restore data, db and webroot when server has to be recreated by pulling the latest backup after server recreation
+- [x] Add tools
 
 ---  
 
