@@ -50,7 +50,7 @@ setup:
   stage: prepare
   script:
     - pip install -r requirements.txt
-    - ansible-galaxy install -r requirements.yaml
+    - ansible-galaxy install -r requirements.yml
 
 validate:
   <<: *common_terraform
