@@ -6,6 +6,7 @@ stages:
   - prepare
   - validate
   - plan
+  - apply
   - deploy
   - configure
   - destroy
@@ -19,24 +20,24 @@ variables:
   TF_VAR_do_token: ${do_token}
 
   ANSIBLE_CONFIG: ${ANSIBLE_ROOT}/ansible.cfg
+  PIP_CACHE_DIR: ${ANSIBLE_ROOT}/.cache/pip
+  VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
   key: digitalocean_doks_demo
   paths:
     - ${TF_ROOT}/.terraform
-    - $HOME/.cache/pip
-    - $HOME/venv/
+    - ${PIP_CACHE_DIR}
+    - ${VENV_DIR}
  
 .common_ansible: &common_ansible
   before_script:
     - python3 -V
-    - virtualenv venv
-    - source venv/bin/activate
+    - virtualenv ${VENV_DIR}
+    - source ${VENV_DIR}/bin/activate
     - cd ${ANSIBLE_ROOT}
-    - pip install -r requirements.txt
-    - ansible-galaxy install -r requirements.yml
       
-.common_ansible: &common_terraform
+.common_terraform: &common_terraform
   before_script:
     - terraform --version
     - cd ${TF_ROOT}
@@ -81,7 +82,7 @@ plan:
 
 apply:
   <<: *common_terraform
-  stage: deploy
+  stage: apply
   script:
     - gitlab-terraform apply
   dependencies:
