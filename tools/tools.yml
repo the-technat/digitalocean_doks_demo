@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     domainFilters:
-      - 'alleaffengaffen.ch' # Domains external-dns shall manage
+      - "alleaffengaffen.ch" # Domains external-dns shall manage
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
