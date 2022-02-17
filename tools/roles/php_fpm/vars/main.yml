@@ -1,4 +1,0 @@
-php_pool_conf_dir: '/etc/php/{{ php_version}}/fpm/pool.d'
-php_service_name: 'php{{ php_version}}-fpm'
-php_fpm_sock: '/run/php/php{{ php_version}}-fpm.sock'
-web_user: 'www-data' 

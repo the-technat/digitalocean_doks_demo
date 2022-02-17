@@ -1,8 +1,0 @@
-galaxy_info:
-  author: Nathanael Liechti
-  description: Setup Nextcloud on Debian Server
-
-  platforms:
-    - name: Debian
-      versions:
-      - 11

@@ -58,12 +58,12 @@ validate:
   script:
     - gitlab-terraform validate
 
-# yamllint:
-#   <<: *common_ansible
-#   stage: validate
-#   variables:
-#   script:
-#     - yamllint --strict .
+yamllint:
+  <<: *common_ansible
+  stage: validate
+  variables:
+  script:
+    - yamllint --strict .
 
 plan:
   <<: *common_terraform
@@ -86,15 +86,16 @@ apply:
   dependencies:
     - plan
 
-# configure:
-#   <<: *common_ansible
-#   stage: deploy
-#   dependencies:
-#     - apply
-#   variables:
-#     DO_TOKEN: ${do_token}
-#   script:
-#     - ansible-playbook tools.yml -v --vault-password-file=$ansible_vault_password -e "@secrets.yml"
+configure:
+  <<: *common_ansible
+  stage: deploy
+  dependencies:
+    - apply
+  variables:
+    DO_API_TOKEN: ${do_token}
+  script:
+    # - ansible-playbook tools.yml -v --vault-password-file=$ansible_vault_password -e "@secrets.yml"
+    - ansible-playbook tools.yml -v
 
 # Allow for destroy by scheduling the destroy job (after every apply)
 destroy:

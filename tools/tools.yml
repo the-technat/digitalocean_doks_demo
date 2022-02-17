@@ -1,0 +1,21 @@
+---
+- name: Infrastructure Tools
+  hosts: all
+  vars_files:
+  - settings.yml
+  tasks:
+  - name: Update kubeconfig for cluster
+    community.digitalocean.digital_ocean_kubernetes_info:
+      oauth_token: "{{ lookup('ansible.builtin.env', 'DO_API_TOKEN') }}"
+      name: alleaffengaffen
+      return_kubeconfig: yes
+    register: alleaffengaffen
+  - ansible.builtin.debug:
+    msg: "Cluster name is {{ alleaffengaffen.data.name }}, ID is {{ alleaffengaffen.data.id }}"
+  - ansible.builtin.debug:
+    msg: "Cluster kubeconfig is {{ my_cluster.data.kubeconfig }}"
+  post_tasks:
+    - name: We are ready
+      debug:
+        msg:
+          - "Kubernetes cluster is provisioned and tools are installed"
