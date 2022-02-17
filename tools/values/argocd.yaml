@@ -52,7 +52,7 @@ server:
     requests:
       cpu: 50m
       memory: 64Mi
- ingress:
+  ingress:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-production
