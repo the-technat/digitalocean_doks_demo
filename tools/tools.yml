@@ -8,6 +8,7 @@
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '$HOME/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
+    # dhParam: '' # openssl dhparam 4096 2> /dev/null | base64
     # do_api_token: '' # override with ansible_vault file
   tasks:
   - name: Update kubeconfig for cluster
@@ -43,8 +44,19 @@
       release_values: "{{ lookup('template', 'values/cert-manager.yaml') | from_yaml }}"
   - name: Create cert-manager cluster issuers
     kubernetes.core.k8s:
+      kubeconfig: "{{ doks.data.kubeconfig }}"
       state: present
       src: "{{ lookup('template', 'values/cluster-issuers.yaml') | from_yaml }}"
+  - name: Deploy ingress-nginx helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://kubernetes.github.io/ingress-nginx/"
+      chart_ref: ingress-nginx
+      chart_version: 4.0.17 
+      release_name: ingress-nginx
+      release_namespace: ingress-nginx
+      create_namespace: yes
+      release_values: "{{ lookup('template', 'values/ingress-nginx.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:
