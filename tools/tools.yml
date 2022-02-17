@@ -8,6 +8,10 @@
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
+    argocdHostname: 'argocd.alleaffengaffen.ch'
+    argocd_admin_user: 'banane'
+    argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
+    argocd_onboarding_repo_path: 'apps'
     # dhParam: '' # openssl dhparam 4096 2> /dev/null | base64
     # do_api_token: '' # override with ansible_vault file
   tasks:
@@ -62,6 +66,16 @@
       release_namespace: ingress-nginx
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/ingress-nginx.yaml') | from_yaml }}"
+  - name: Deploy argocd helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://argoproj.github.io/argo-helm/"
+      chart_ref: argo-cd
+      chart_version: 3.33.5
+      release_name: argocd
+      release_namespace: argocd
+      create_namespace: yes
+      release_values: "{{ lookup('template', 'values/argocd.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:
