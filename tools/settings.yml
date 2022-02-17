@@ -1,4 +1,0 @@
----
-domainFilters: ['alleaffengaffen.ch'] # Domains external-dns shall manage
-txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
-# do_api_token: '' # define using ansible-vault
