@@ -1,6 +1,6 @@
 ---
 - name: Infrastructure Tools
-  hosts: all
+  hosts: localhost
   vars_files:
   - settings.yml
   tasks:
@@ -15,6 +15,15 @@
       msg:
         - "Cluster name is {{ alleaffengaffen.data.name }}, ID is {{ alleaffengaffen.data.id }}"
         - "Cluster kubeconfig is {{ alleaffengaffen.data.kubeconfig }}"
+  - name: Deploy external-dns helm chart
+    kubernetes.core.helm:
+      kubeconfig: "{{ alleaffengaffen.data.kubeconfig }}"
+      chart_repo_url: "https://kubernetes-sigs.github.io/external-dns/"
+      chart_ref: external-dns
+      chart_version: 1.7.1
+      release_name: external-dns
+      release_namespace: external-dns
+      release_values: "{{ lookup('template', 'values/external-dns.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:

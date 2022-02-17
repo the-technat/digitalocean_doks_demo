@@ -1,0 +1,31 @@
+logLevel: info
+logFormat: text
+
+interval: 1m
+triggerLoopOnEvent: true
+
+sources:
+  - service
+  - ingress
+
+policy: sync
+
+registry: txt
+txtOwnerId: "{{ txtOwnerId }}"
+# txtPrefix: ""
+# txtSuffix: ""
+
+domainFilters: "{{ domainFilters }}"
+
+provider: digitalocean
+
+env:
+  DO_TOKEN: "{{ DO_API_TOKEN }}"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 100Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi

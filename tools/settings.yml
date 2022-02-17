@@ -1,2 +1,3 @@
 ---
-nc_admin: 'demo' # Nextcloud Admin User
+domainFilters: ['alleaffengaffen.ch'] # Domains external-dns shall manage
+txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
