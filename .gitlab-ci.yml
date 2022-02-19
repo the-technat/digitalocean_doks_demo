@@ -25,6 +25,7 @@ variables:
   VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
+  key: digitalocean_doks_demo
   paths:
     - ${TF_ROOT}/.terraform
     - ${PIP_CACHE_DIR}
@@ -36,6 +37,9 @@ cache:
     - python3 -m venv ${VENV_DIR}
     - source ${VENV_DIR}/bin/activate
     - cd ${ANSIBLE_ROOT}
+    - pip install -r requirements.txt
+    - ansible-galaxy install -r requirements.yml
+
       
 .common_terraform: &common_terraform
   before_script:
@@ -48,12 +52,12 @@ init:
   script:
     - gitlab-terraform init
 
-setup:
-  <<: *common_ansible
-  stage: prepare
-  script:
-    - pip install -r requirements.txt
-    - ansible-galaxy install -r requirements.yml
+# setup:
+#   <<: *common_ansible
+#   stage: prepare
+#   script:
+#     - pip install -r requirements.txt
+#     - ansible-galaxy install -r requirements.yml
 
 validate:
   <<: *common_terraform
