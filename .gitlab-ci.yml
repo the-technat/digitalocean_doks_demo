@@ -21,6 +21,7 @@ variables:
 
   ANSIBLE_CONFIG: ${ANSIBLE_ROOT}/ansible.cfg
   PIP_CACHE_DIR: ${ANSIBLE_ROOT}/.cache/pip
+  GALAXY_CACHE_DIR: ${ANSIBLE_ROOT}/galaxy_cache
   VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
@@ -32,7 +33,7 @@ cache:
 .common_ansible: &common_ansible
   before_script:
     - python3 -V
-    - virtualenv ${VENV_DIR}
+    - python3 -m ${VENV_DIR}
     - source ${VENV_DIR}/bin/activate
     - cd ${ANSIBLE_ROOT}
       
@@ -95,8 +96,7 @@ configure:
   variables:
     DO_API_TOKEN: ${do_token}
   script:
-    - ansible-galaxy collection install kubernetes.core
-    - pip list
+    - ansible-galaxy collection list
     - ansible-playbook tools.yml --vault-password-file=$ansible_vault_password -e "@secrets.yml"
 
 # Allow for destroy by scheduling the destroy job (after every apply)
