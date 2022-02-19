@@ -21,7 +21,7 @@ variables:
 
   ANSIBLE_CONFIG: ${ANSIBLE_ROOT}/ansible.cfg
   PIP_CACHE_DIR: ${ANSIBLE_ROOT}/.cache/pip
-  GALAXY_CACHE_DIR: ${ANSIBLE_ROOT}/galaxy_cache
+  # GALAXY_CACHE_DIR: ${ANSIBLE_ROOT}/galaxy_cache
   VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
@@ -39,7 +39,9 @@ cache:
     - cd ${ANSIBLE_ROOT}
     - pip install -r requirements.txt
     - ansible-galaxy install -r requirements.yml
-
+    - pip list
+    - ansible-galaxt collection list
+    - ls -lah ${VENV_DIR}/bin
       
 .common_terraform: &common_terraform
   before_script:
@@ -95,12 +97,9 @@ apply:
 configure:
   <<: *common_ansible
   stage: deploy
-  dependencies:
-    - apply
   variables:
     DO_API_TOKEN: ${do_token}
   script:
-    - ansible-galaxy collection list
     - ansible-playbook tools.yml --vault-password-file=$ansible_vault_password -e "@secrets.yml"
 
 # Allow for destroy by scheduling the destroy job (after every apply)
