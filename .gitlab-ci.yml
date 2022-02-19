@@ -40,7 +40,7 @@ cache:
     - pip install -r requirements.txt
     - ansible-galaxy install -r requirements.yml
     - pip list
-    - ansible-galaxt collection list
+    - ansible-galaxy collection list
     - ls -lah ${VENV_DIR}/bin
       
 .common_terraform: &common_terraform
