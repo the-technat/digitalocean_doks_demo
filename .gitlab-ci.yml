@@ -3,7 +3,6 @@
 image: registry.code.immerda.ch/k8s_at_hetzner/ci-image:master
 
 stages:
-  - prepare
   - validate
   - plan
   - apply
@@ -21,7 +20,7 @@ variables:
 
   ANSIBLE_CONFIG: ${ANSIBLE_ROOT}/ansible.cfg
   PIP_CACHE_DIR: ${ANSIBLE_ROOT}/.cache/pip
-  # GALAXY_CACHE_DIR: ${ANSIBLE_ROOT}/galaxy_cache
+  COLLECTIONS_PATH: ${ANSIBLE_ROOT}/.collections
   VENV_DIR: ${ANSIBLE_ROOT}/venv
 
 cache:
@@ -30,7 +29,11 @@ cache:
     - ${TF_ROOT}/.terraform
     - ${PIP_CACHE_DIR}
     - ${VENV_DIR}
- 
+    - ${COLLECTIONS_PATH}
+
+# Init the workspace using this before_script for every ansible job
+# If a previous job already run the init and caching is enabled
+# the init will be faster (as deps already installed)
 .common_ansible: &common_ansible
   before_script:
     - python3 -V
@@ -39,27 +42,12 @@ cache:
     - cd ${ANSIBLE_ROOT}
     - pip install -r requirements.txt
     - ansible-galaxy install -r requirements.yml
-    - pip list
-    - ansible-galaxy collection list
-    - ls -lah ${VENV_DIR}/bin
       
 .common_terraform: &common_terraform
   before_script:
     - terraform --version
     - cd ${TF_ROOT}
-
-init:
-  <<: *common_terraform
-  stage: prepare
-  script:
     - gitlab-terraform init
-
-# setup:
-#   <<: *common_ansible
-#   stage: prepare
-#   script:
-#     - pip install -r requirements.txt
-#     - ansible-galaxy install -r requirements.yml
 
 validate:
   <<: *common_terraform
@@ -71,7 +59,7 @@ ansible_lint:
   <<: *common_ansible
   stage: validate
   script:
-    - ansible-lint -v --show-relpath --parseable-severity --nocolor tools.yml
+    - ansible-lint --offline -v --show-relpath --parseable-severity --nocolor tools.yml
 
 plan:
   <<: *common_terraform
@@ -103,9 +91,16 @@ configure:
     - ansible-playbook tools.yml --vault-password-file=$ansible_vault_password -e "@secrets.yml"
 
 # Allow for destroy by scheduling the destroy job (after every apply)
-destroy:
+destroy_tools:
+  <<: *common_ansible
+  stage: destroy
+  when: manual
+  script:
+    - ansible-playbook destroy-tools.yml
+
+destroy_infrastructure:
   <<: *common_terraform
   stage: destroy
   when: manual
   script:
-  - gitlab-terraform destroy
+    - gitlab-terraform destroy
