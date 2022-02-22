@@ -59,19 +59,19 @@ server:
   ingress:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-staging
+      cert-manager.io/cluster-issuer: "{{ cluster_issuer }}"
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
     ingressClassName: "nginx"
     hosts:
-      - "{{ argocdHostname }}"
+      - "{{ argocd_fqdn }}"
     pathType: Prefix
     tls:
       - secretName: argocd-tls-certificate
         hosts:
-          - "{{ argocdHostname }}"
+          - "{{ argocd_fqdn }}"
 
   config:
-    url: "https://{{ argocdHostname }}"
+    url: "https://{{ argocd_fqdn }}"
     accounts.ci: apiKey
     "accounts.{{ argocd_admin_user }}": login
     accounts.admin.enabled: "false"

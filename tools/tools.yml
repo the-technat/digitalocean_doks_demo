@@ -8,7 +8,7 @@
     cluster_name: 'alleaffengaffen'
     kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
-    argocdHostname: 'argocd.alleaffengaffen.ch'
+    argocd_fqdn: 'argocd.alleaffengaffen.ch'
     argocd_admin_user: 'banane'
     argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
     argocd_onboarding_repo_path: 'apps'
