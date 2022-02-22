@@ -64,7 +64,6 @@ grafana:
   replicas: 3
   podDisruptionBudget:
     minAvailable: 1
-    maxUnavailable: 1
   serviceMonitor:
     enabled: true
   resources:
