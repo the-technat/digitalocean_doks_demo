@@ -2,11 +2,11 @@
 - name: Infrastructure Tools
   hosts: localhost
   vars:
+    kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     domainFilters:
       - "alleaffengaffen.ch" # Domains external-dns shall manage
     txtOwnerId: 'alleaffengaffen' # Owner to note in TXT records
     cluster_name: 'alleaffengaffen'
-    kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
     argocd_fqdn: 'argocd.alleaffengaffen.ch'
     argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
@@ -43,6 +43,7 @@
       chart_repo_url: "https://kubernetes-sigs.github.io/external-dns/"
       chart_ref: external-dns
       chart_version: 1.7.1
+      wait: yes
       release_name: external-dns
       release_namespace: external-dns
       create_namespace: yes
@@ -53,6 +54,7 @@
       chart_repo_url: "https://charts.jetstack.io"
       chart_ref: cert-manager
       chart_version: v1.7.1
+      wait: yes
       release_name: cert-manager
       release_namespace: cert-manager
       create_namespace: yes
@@ -73,6 +75,7 @@
       chart_repo_url: "https://kubernetes.github.io/ingress-nginx/"
       chart_ref: ingress-nginx
       chart_version: 4.0.17 
+      wait: yes
       release_name: ingress-nginx
       release_namespace: ingress-nginx
       create_namespace: yes
@@ -83,6 +86,7 @@
       chart_repo_url: "https://prometheus-community.github.io/helm-charts"
       chart_ref: kube-prometheus-stack
       chart_version: 32.2.1
+      wait: yes
       release_name: kube-prometheus-stack
       release_namespace: monitoring
       create_namespace: yes
@@ -93,6 +97,7 @@
       chart_repo_url: "https://argoproj.github.io/argo-helm/"
       chart_ref: argo-cd
       chart_version: 3.33.5
+      wait: yes
       release_name: argocd
       release_namespace: argocd
       create_namespace: yes
@@ -101,4 +106,9 @@
     - name: We are ready
       debug:
         msg:
-          - "Kubernetes cluster is provisioned and tools are installed"
+          - "Your Kubernetes Cluster is provisioned and the management tools are installed:"
+          - "ArgoCD UI: https://{{ argocd_fqdn }}"
+          - "Grafana UI: https://{{ grafana_fqdn }}"
+          - "Prometheus UI: https://{{ prometheus_fqdn }}"
+          - "Alertmanager UI: https://{{ alertmanager_fqdn }}"
+          - "Put your ArgoCD app specs into {{ argocd_onboarding_repo }} under /{{ argocd_onboarding_repo_path }}"
