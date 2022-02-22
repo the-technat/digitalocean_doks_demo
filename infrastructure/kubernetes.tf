@@ -16,7 +16,7 @@ module "kubernetes" {
   auto_scale = true
   min_nodes  = 1
   max_nodes  = 5
-  node_count = 1
+  node_count = 0
 
   node_labels = {
     env        = "alleaffengaffen_ch"
