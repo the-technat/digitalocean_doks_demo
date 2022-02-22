@@ -28,8 +28,6 @@ controller:
     enabled: true
     serviceMonitor:
       enabled: true
-    rules:
-      enabled: true
 
 # Disable the dex provider
 dex:
