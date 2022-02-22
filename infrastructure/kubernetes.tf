@@ -1,6 +1,5 @@
 module "kubernetes" {
-  source  = "nlamirault/doks/digitalocean"
-  version = "v0.3.0"
+  source = "git::https://github.com/the-technat/terraform-digitalocean-doks.git"
 
   cluster_name = "alleaffengaffen"
 
@@ -16,7 +15,6 @@ module "kubernetes" {
   auto_scale = true
   min_nodes  = 1
   max_nodes  = 5
-  node_count = 0
 
   node_labels = {
     env        = "alleaffengaffen_ch"
