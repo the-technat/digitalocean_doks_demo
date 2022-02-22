@@ -61,6 +61,19 @@ alertmanager:
 
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 grafana:
+  replicas: 3
+  podDisruptionBudget:
+    minAvailable: 1
+    maxUnavailable: 1
+  serviceMonitor:
+    enabled: true
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
   defaultDashboardsTimezone: Europe/Zurich
   adminPassword: "{{ grafana_admin_password }}"
   ingress:
