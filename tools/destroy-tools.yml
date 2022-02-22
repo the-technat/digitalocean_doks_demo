@@ -31,6 +31,12 @@
       state: absent
       release_name: ingress-nginx
       release_namespace: ingress-nginx
+  - name: Uninstall kube-prometheus-stack helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      state: absent
+      release_name: kube-prometheus-stack
+      release_namespace: monitoring
   - name: Uninstall argocd helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"

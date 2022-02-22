@@ -36,17 +36,6 @@ The command will prompt you for a Vault password and then open an editor where y
 
 Once you commit your changes the pipeline should automatically trigger and build your environment.
 
-## To Do
-
-There is always a way to improve:
-
-- [x] Fix PodTopologySpreadContains on argocd pods 
-- [x] Deploy cert-manager cluster-issuers with ansible (fails currently)
-- [ ] Deploy kube-prometheus-stack (currently missing)
-- [ ] Reusability: Add variables for all hardcoded names
-- [ ] Use one ingress for argocd that passes SSL traffic to argocd (for distinction between http and grpc)
-- [ ] Destroy the helm charts before destroying the cluster (LoadBalancers and volumes aren't tracked by terraform)
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -62,7 +51,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_kubernetes"></a> [kubernetes](#module\_kubernetes) | nlamirault/doks/digitalocean | v0.3.0 |
+| <a name="module_kubernetes"></a> [kubernetes](#module\_kubernetes) | git::https://github.com/the-technat/terraform-digitalocean-doks.git | n/a |
 
 ## Resources
 
