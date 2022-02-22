@@ -24,6 +24,39 @@ controller:
     minAvailable: 1
     maxUnavailable: 0
 
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    rules:
+      enabled: true
+      spec:
+        - alert: ArgoAppMissing
+          expr: |
+            absent(argocd_app_info)
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "[ArgoCD] No reported applications"
+            description: >
+              ArgoCD has not reported any applications data for the past 15 minutes which
+              means that it must be down or not functioning properly.  This needs to be
+              resolved for this cloud to continue to maintain state.
+        - alert: ArgoAppNotSynced
+          expr: |
+            argocd_app_info{sync_status!="Synced"} == 1
+          for: 12h
+          labels:
+            severity: warning
+          annotations:
+            summary: "[{{`{{$labels.name}}`}}] Application not synchronized"
+            description: >
+              The application [{{`{{$labels.name}}`}} has not been synchronized for over
+              12 hours which means that the state of this cloud has drifted away from the
+              state inside Git.
+
+
 # Disable the dex provider
 dex:
   enabled: false
@@ -35,6 +68,22 @@ redis-ha:
   enabled: true
   podDisruptionBudget:
     minAvailable: 1
+  haProxy:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  redis:
+    resources:
+      requests:
+        memory: 200Mi
+        cpu: 100m
+      limits:
+        memory: 700Mi
+  exporter:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
 server:
   ## HA config
@@ -69,6 +118,11 @@ server:
       - secretName: argocd-tls-certificate
         hosts:
           - "{{ argocd_fqdn }}"
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
   config:
     url: "https://{{ argocd_fqdn }}"
@@ -123,6 +177,11 @@ repoServer:
     enabled: true
     minAvailable: 1
     maxUnavailable: 0
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
 configs:
   knownHosts:

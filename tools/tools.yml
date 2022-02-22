@@ -75,16 +75,6 @@
       release_namespace: ingress-nginx
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/ingress-nginx.yaml') | from_yaml }}"
-  - name: Deploy argocd helm chart
-    kubernetes.core.helm:
-      kubeconfig_path: "{{ kubeconfig_path }}"
-      chart_repo_url: "https://argoproj.github.io/argo-helm/"
-      chart_ref: argo-cd
-      chart_version: 3.33.5
-      release_name: argocd
-      release_namespace: argocd
-      create_namespace: yes
-      release_values: "{{ lookup('template', 'values/argocd.yaml') | from_yaml }}"
   - name: Deploy kube-prometheus-stack helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
@@ -95,6 +85,16 @@
       release_namespace: monitoring
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/kube_prometheus_stack.yaml') | from_yaml }}"
+  - name: Deploy argocd helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://argoproj.github.io/argo-helm/"
+      chart_ref: argo-cd
+      chart_version: 3.33.5
+      release_name: argocd
+      release_namespace: argocd
+      create_namespace: yes
+      release_values: "{{ lookup('template', 'values/argocd.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:

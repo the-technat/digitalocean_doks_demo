@@ -37,6 +37,7 @@ alertmanager:
     resources:
       requests:
         memory: 400Mi
+        cpu: 200m
       limits:
         memory: 2Gi
         cpu: 2
@@ -47,7 +48,7 @@ alertmanager:
     topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: SchedulaAnyway
+      whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
           app: alertmanager
