@@ -64,6 +64,9 @@ server:
     - name: ARGOCD_API_SERVER_REPLICAS
       value: '3'
 
+  extraArgs:
+  - --insecure
+
   topologySpreadConstraints:
   - maxSkew: 1
     topologyKey: kubernetes.io/hostname
@@ -86,6 +89,8 @@ server:
     hosts:
       - "{{ argocd_fqdn }}"
     pathType: Prefix
+    paths:
+      - /
     tls:
       - secretName: argocd-tls-certificate
         hosts:
