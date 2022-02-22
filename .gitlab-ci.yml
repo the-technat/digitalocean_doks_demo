@@ -94,6 +94,8 @@ configure:
 destroy_tools:
   <<: *common_ansible
   stage: destroy
+  variables:
+    DO_API_TOKEN: ${do_token}
   when: manual
   script:
     - ansible-playbook destroy-tools.yml
