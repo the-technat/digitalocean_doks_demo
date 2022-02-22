@@ -1,6 +1,9 @@
 ---
 - name: Uninstall infrastructure tools
   hosts: localhost
+  vars:
+    cluster_name: 'alleaffengaffen'
+    kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
