@@ -103,16 +103,6 @@ server:
 
   config:
     url: "https://{{ argocd_fqdn }}"
-    accounts.ci: apiKey
-    "accounts.{{ argocd_admin_user }}": login
-    accounts.admin.enabled: "false"
-
-  rbacConfig:
-    policy.default: role:readonly
-    policy.csv: |
-      g, {{ argocd_admin_user }}, role:admin
-      p, role:ci, applications, *, */*, allow
-      g, ci, role:ci
 
   additionalApplications:
   - name: "{{ cluster_name }}"
@@ -161,6 +151,10 @@ repoServer:
       enabled: true
 
 configs:
+  secret:
+    ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+    ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+    argocdServerAdminPassword: "{{ argocd_admin_password_bcrypt }}"
   knownHosts:
     data:
       ssh_known_hosts: |

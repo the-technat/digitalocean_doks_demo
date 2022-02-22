@@ -9,7 +9,6 @@
     kubeconfig_path: '/tmp/kubeconfig' # location to write kubeconfig to (dir needs to exist)
     letsencrypt_mail: 'banane@alleaffengaffen.ch' # mail for cluster-issuers
     argocd_fqdn: 'argocd.alleaffengaffen.ch'
-    argocd_admin_user: 'banane'
     argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
     argocd_onboarding_repo_path: 'apps'
     cluster_issuer: 'letsencrypt-staging'
@@ -23,6 +22,9 @@
     # dhParam: '' # openssl dhparam 4096 2> /dev/null | base64
     # do_api_token: '' # override with ansible_vault file
     # grafana_admin_password: ''
+    # Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+    # `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+    # argocd_admin_password_bcrypt: ''
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
