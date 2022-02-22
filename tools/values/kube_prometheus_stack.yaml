@@ -1,3 +1,9 @@
+defaultRules:
+  rules:
+    etcd: false
+    kubelet: false
+    kubeScheduler: false
+
 alertmanager:
   podDisruptionBudget:
     enabled: true
@@ -71,6 +77,10 @@ grafana:
       hosts:
       - "{{ grafana_fqdn }}"
 
+kubelet:
+  enabled: false
+kubeControllerManager:
+  enabled: false
 kubeEtcd:
   enabled: false # We don't have access to etcd
 kubeScheduler:
