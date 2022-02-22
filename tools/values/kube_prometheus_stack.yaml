@@ -61,9 +61,9 @@ alertmanager:
 
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 grafana:
-  replicas: 3
-  podDisruptionBudget:
-    minAvailable: 1
+  replicas: 1
+  # podDisruptionBudget:
+    # minAvailable: 1
   serviceMonitor:
     enabled: true
   resources:
