@@ -43,6 +43,7 @@ There is always a way to improve:
 - [x] Fix PodTopologySpreadContains on argocd pods 
 - [x] Deploy cert-manager cluster-issuers with ansible (fails currently)
 - [ ] Deploy kube-prometheus-stack (currently missing)
+- [ ] Reusability: Add variables for all hardcoded names
 - [ ] Use one ingress for argocd that passes SSL traffic to argocd (for distinction between http and grpc)
 - [ ] Destroy the helm charts before destroying the cluster (LoadBalancers and volumes aren't tracked by terraform)
 

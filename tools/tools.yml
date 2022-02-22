@@ -12,8 +12,17 @@
     argocd_admin_user: 'banane'
     argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
     argocd_onboarding_repo_path: 'apps'
+    cluster_issuer: 'letsencrypt-staging'
+    alertmanager_fqdn: 'alertmanager.alleaffengaffen.ch'
+    alertmanager_storage: '10Gi'
+    alertmanager_storage_class: 'do-block-storage'
+    grafana_fqdn: 'grafana.alleaffengaffen.ch'
+    prometheus_fqdn: 'prometheus.alleaffengaffen.ch'
+    prometheus_storage: '50Gi'
+    prometheus_storage_class: 'do-block-storage'
     # dhParam: '' # openssl dhparam 4096 2> /dev/null | base64
     # do_api_token: '' # override with ansible_vault file
+    # grafana_admin_password: ''
   tasks:
   - name: Update kubeconfig for cluster
     community.digitalocean.digital_ocean_kubernetes_info:
@@ -76,6 +85,16 @@
       release_namespace: argocd
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/argocd.yaml') | from_yaml }}"
+  - name: Deploy kube-prometheus-stack helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://prometheus-community.github.io/helm-charts"
+      chart_ref: kube-prometheus-stack
+      chart_version: 32.2.1
+      release_name: kube-prometheus-stack
+      release_namespace: monitoring
+      create_namespace: yes
+      release_values: "{{ lookup('template', 'values/kube_prometheus_stack.yaml') | from_yaml }}"
   post_tasks:
     - name: We are ready
       debug:
