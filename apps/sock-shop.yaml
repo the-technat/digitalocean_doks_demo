@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sock-shop
+spec:
+  destination:
+    name: ''
+    namespace: sock-shop
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: microservices-demo/deploy/kubernetes/helm-chart
+    repoURL: 'https://code.immerda.ch/technat/sock-shop.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - ../../../../values.yaml
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
