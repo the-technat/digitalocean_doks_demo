@@ -1,0 +1,7 @@
+resources:
+- ./microservices-demo/deploy/kubernetes/manifests
+- ./microservices-demo/deploy/kubernetes/autoscaling
+- ./microservices-demo/deploy/kubernetes/manifests-logging
+- ./microservices-demo/deploy/kubernetes/manifests-alerting
+- ./microservices-demo/deploy/kubernetes/manifests-loadtest
+- ./microservices-demo/deploy/kubernetes/manifests-monitoring

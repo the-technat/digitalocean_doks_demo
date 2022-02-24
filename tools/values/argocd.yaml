@@ -114,8 +114,6 @@ server:
       repoURL: "{{ argocd_onboarding_repo }}"
       targetRevision: HEAD
       path: "{{ argocd_onboarding_repo_path }}"
-      directory:
-        recurse: true
     destination:
       server: https://kubernetes.default.svc
       namespace: argocd
