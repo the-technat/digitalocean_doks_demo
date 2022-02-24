@@ -1,5 +1,6 @@
 prometheus:
   url: http://prometheus-operated.monitoring.svc
+  port: 9090
 
 replicas: 3
 
