@@ -42,7 +42,6 @@ rules:
 
 podDisruptionBudget:
   enabled: true
-  minAvailable: 1
 
 certManager:
   enabled: true
