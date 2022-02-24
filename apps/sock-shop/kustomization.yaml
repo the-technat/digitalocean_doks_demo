@@ -51,3 +51,4 @@ resources:
 patches:
 - ./patch-20-grafana-configmap.yaml
 - ./patch-10-front-end-svc.yaml
+- ./patch-cart-hsc.yaml
