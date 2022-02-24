@@ -100,7 +100,7 @@
       wait: yes
       release_name: prometheus-adapter
       release_namespace: monitoring
-      release_values: "{{ lookup('template', 'values/prometheus-adapter.yaml') | from_yaml }}"
+      release_values: "{{ lookup('template', 'values/prometheus_adapter.yaml') | from_yaml }}"
   - name: Deploy argocd helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
