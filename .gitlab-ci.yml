@@ -44,7 +44,7 @@ cache:
     - ansible-galaxy install -r requirements.yml
   rules:
     - changes:
-      - tools/*
+        - tools/*
       
 .common_terraform: &common_terraform
   before_script:
