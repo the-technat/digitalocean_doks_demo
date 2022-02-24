@@ -37,6 +37,13 @@
       wait: yes
       release_name: ingress-nginx
       release_namespace: ingress-nginx
+  - name: Uninstall prometheus-adapter helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      state: absent
+      wait: yes
+      release_name: prometheus-adapter
+      release_namespace: monitoring
   - name: Uninstall kube-prometheus-stack helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
@@ -51,3 +58,8 @@
       state: absent
       release_name: argocd
       release_namespace: argocd
+  - name: Remove all left over PVCs
+    kubernetes.core.k8s:
+      state: absent
+      kind: PersistentVolumeClaim
+      name: *
