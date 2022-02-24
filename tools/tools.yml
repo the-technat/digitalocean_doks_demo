@@ -74,8 +74,8 @@
       kubeconfig_path: "{{ kubeconfig_path }}"
       chart_repo_url: "https://kubernetes.github.io/ingress-nginx/"
       chart_ref: ingress-nginx
-      chart_version: 4.0.17 
-      wait: yes
+      chart_version: 4.0.17
+      # wait: yes
       release_name: ingress-nginx
       release_namespace: ingress-nginx
       create_namespace: yes
