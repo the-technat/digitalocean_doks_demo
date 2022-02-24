@@ -58,8 +58,3 @@
       state: absent
       release_name: argocd
       release_namespace: argocd
-  - name: Remove all left over PVCs
-    kubernetes.core.k8s:
-      state: absent
-      kind: PersistentVolumeClaim
-      name: *
