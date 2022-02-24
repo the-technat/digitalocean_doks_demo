@@ -45,7 +45,8 @@ resources:
 - ./microservices-demo/deploy/kubernetes/autoscaling/queue-master-hsc.yaml
 - ./microservices-demo/deploy/kubernetes/autoscaling/shipping-hsc.yaml
 - ./microservices-demo/deploy/kubernetes/autoscaling/user-hsc.yaml
-- ./microservices-demo/deploy/kubernetes/manifests-monitoring/20-grafana-configmap.yaml
+# - ./microservices-demo/deploy/kubernetes/manifests-monitoring/20-grafana-configmap.yaml
+- ./20-grafana-configmap.yaml
 
 patches:
 - ./patch-20-grafana-configmap.yaml
