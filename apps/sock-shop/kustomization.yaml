@@ -5,3 +5,4 @@ resources:
 - ./microservices-demo/deploy/kubernetes/manifests-alerting
 - ./microservices-demo/deploy/kubernetes/manifests-loadtest
 - ./microservices-demo/deploy/kubernetes/manifests-monitoring
+- ./ingress.yaml
