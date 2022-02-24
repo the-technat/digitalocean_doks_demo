@@ -108,6 +108,7 @@
       chart_ref: argo-cd
       chart_version: 3.33.5
       wait: yes
+      wait_timeout: 10m
       release_name: argocd
       release_namespace: argocd
       create_namespace: yes
