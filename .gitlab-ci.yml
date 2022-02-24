@@ -42,12 +42,18 @@ cache:
     - cd ${ANSIBLE_ROOT}
     - pip install -r requirements.txt
     - ansible-galaxy install -r requirements.yml
+  rules:
+    - changes:
+      - tools/*
       
 .common_terraform: &common_terraform
   before_script:
     - terraform --version
     - cd ${TF_ROOT}
     - gitlab-terraform init
+  rules:
+    - changes:
+      - infrastructure/*
 
 validate:
   <<: *common_terraform
