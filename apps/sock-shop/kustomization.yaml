@@ -48,7 +48,6 @@ resources:
 - ./microservices-demo/deploy/kubernetes/manifests-loadtest/loadtest-dep.yaml
 
 patches:
-- ./patch-20-grafana-configmap.yaml
 - ./patch-10-front-end-svc.yaml
 - ./patch-cart-hsc.yaml
 - ./patch-loadtest-dep.yaml
