@@ -90,7 +90,7 @@ grafana:
       - "{{ grafana_fqdn }}"
 
 kubelet:
-  enabled: false
+  enabled: true
 kubeControllerManager:
   enabled: false
 kubeEtcd:
