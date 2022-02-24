@@ -64,8 +64,8 @@ server:
     - name: ARGOCD_API_SERVER_REPLICAS
       value: '3'
 
-  extraArgs:
-  - --insecure
+  # extraArgs:
+  # - --insecure
 
   topologySpreadConstraints:
   - maxSkew: 1
@@ -84,7 +84,9 @@ server:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: "{{ cluster_issuer }}"
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     ingressClassName: "nginx"
     hosts:
       - "{{ argocd_fqdn }}"
@@ -92,7 +94,7 @@ server:
     paths:
       - /
     tls:
-      - secretName: argocd-tls-certificate
+      - secretName: argocd-secret
         hosts:
           - "{{ argocd_fqdn }}"
 
