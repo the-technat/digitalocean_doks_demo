@@ -6,6 +6,9 @@ controller:
     - name: "ARGOCD_CONTROLLER_REPLICAS"
       value: "3"
 
+  args:
+    appResyncPeriod: "30"
+
   topologySpreadConstraints:
   - maxSkew: 1
     topologyKey: kubernetes.io/hostname
