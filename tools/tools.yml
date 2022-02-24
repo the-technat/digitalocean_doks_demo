@@ -91,6 +91,16 @@
       release_namespace: monitoring
       create_namespace: yes
       release_values: "{{ lookup('template', 'values/kube_prometheus_stack.yaml') | from_yaml }}"
+  - name: Deploy prometheus-adapter helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      chart_repo_url: "https://prometheus-community.github.io/helm-charts/"
+      chart_ref: prometheus-adapter
+      chart_version: 3.0.2
+      wait: yes
+      release_name: prometheus-adapter
+      release_namespace: monitoring
+      release_values: "{{ lookup('template', 'values/prometheus-adapter.yaml') | from_yaml }}"
   - name: Deploy argocd helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"

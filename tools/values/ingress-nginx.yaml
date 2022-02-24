@@ -4,12 +4,10 @@ controller:
 
   kind: DaemonSet
 
-  minReadySeconds: 5
-
   topologySpreadConstraints:
   - maxSkew: 1
     topologyKey: kubernetes.io/hostname
-    whenUnsatisfiable: DoNotSchedule
+    whenUnsatisfiable: ScheduleAnyway
 
 defaultBackend:
   enabled: true
