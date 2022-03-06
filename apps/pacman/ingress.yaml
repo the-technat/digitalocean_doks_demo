@@ -6,7 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   rules:
   - host: banane.alleaffengaffen.ch
@@ -16,7 +16,7 @@ spec:
           path: /
           backend:
             service:
-              name: front-end
+              name: pacman
               port: 
                 number: 80
   tls:

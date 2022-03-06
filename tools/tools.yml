@@ -11,7 +11,7 @@
     argocd_fqdn: 'argocd.alleaffengaffen.ch'
     argocd_onboarding_repo: 'https://code.immerda.ch/technat/digitalocean_doks_demo.git'
     argocd_onboarding_repo_path: 'apps'
-    cluster_issuer: 'letsencrypt-staging'
+    cluster_issuer: 'letsencrypt-production'
     alertmanager_fqdn: 'alertmanager.alleaffengaffen.ch'
     alertmanager_storage: '10Gi'
     alertmanager_storage_class: 'do-block-storage'
