@@ -7,3 +7,6 @@ resources:
 - ./pacman-service.yaml
 - ./pacman-deployment.yaml
 - ./ingress.yaml
+
+patches:
+  - ./patch-pacman-service.yaml
