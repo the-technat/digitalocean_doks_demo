@@ -1,5 +1,6 @@
 namespace: pacman
 resources:
+- ./namespace.yaml
 - ./mongo-pvc.yaml
 - ./mongo-service.yaml
 - ./mongo-deployment.yaml
