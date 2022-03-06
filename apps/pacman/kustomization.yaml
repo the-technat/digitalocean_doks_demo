@@ -1,0 +1,7 @@
+resources:
+- ./mongo-pvc.yaml
+- ./mongo-service.yaml
+- ./mongo-deployment.yaml
+- ./pacman-service.yaml
+- ./pacman-deployment.yaml
+- ./ingress.yaml
