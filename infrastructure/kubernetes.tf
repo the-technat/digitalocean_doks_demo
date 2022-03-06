@@ -6,7 +6,7 @@ module "kubernetes" {
   region = "fra1"
 
   # find version using `doctl kubernetes options versions`
-  kubernetes_version            = "1.21.9"
+  kubernetes_version            = "1.22.7"
   auto_upgrade                  = true
   maintenance_policy_start_time = "15:00"
   maintenance_policy_day        = "sunday"
