@@ -10,3 +10,4 @@ resources:
 
 patches:
   - ./patch-pacman-service.yaml
+  - ./patch-mongo-service.yaml
