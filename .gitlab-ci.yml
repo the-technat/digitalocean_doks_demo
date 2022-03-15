@@ -59,7 +59,7 @@ ansible_lint:
   <<: *common_ansible
   stage: validate
   script:
-    - ansible-lint --offline -v --show-relpath --parseable-severity --nocolor tools.yml
+    - ansible-lint --offline -v --show-relpath --nocolor tools.yml
 
 plan:
   <<: *common_terraform
