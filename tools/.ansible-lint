@@ -5,3 +5,4 @@ skip_list:
   - command-instead-of-shell
   - no-changed-when
   - experimental
+  - fqcn-builtins  
