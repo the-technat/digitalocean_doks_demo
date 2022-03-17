@@ -2,7 +2,7 @@ prometheus:
   url: http://prometheus-operated.monitoring.svc
   port: 9090
 
-replicas: 3
+replicas: 2
 
 resources:
   requests:
