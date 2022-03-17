@@ -58,3 +58,5 @@
       state: absent
       release_name: argocd
       release_namespace: argocd
+  - name: Delete all PVs
+    shell: kubectl delete pv --all -A
