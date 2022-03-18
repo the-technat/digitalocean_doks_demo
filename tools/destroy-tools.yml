@@ -16,27 +16,13 @@
       content: "{{ doks.data.kubeconfig }}"
       dest: "{{ kubeconfig_path }}"
       mode: 0600
-  - name: Uninstall external-dns helm chart
+  - name: Uninstall argocd helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
-      state: absent
       wait: yes
-      release_name: external-dns
-      release_namespace: external-dns
-  - name: Uninstall cert-manager helm chart
-    kubernetes.core.helm:
-      kubeconfig_path: "{{ kubeconfig_path }}"
       state: absent
-      wait: yes
-      release_name: cert-manager
-      release_namespace: cert-manager
-  - name: Uninstall ingress-nginx helm chart
-    kubernetes.core.helm:
-      kubeconfig_path: "{{ kubeconfig_path }}"
-      state: absent
-      wait: yes
-      release_name: ingress-nginx
-      release_namespace: ingress-nginx
+      release_name: argocd
+      release_namespace: argocd
   - name: Uninstall prometheus-adapter helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
@@ -51,12 +37,26 @@
       wait: yes
       release_name: kube-prometheus-stack
       release_namespace: monitoring
-  - name: Uninstall argocd helm chart
+  - name: Uninstall ingress-nginx helm chart
     kubernetes.core.helm:
       kubeconfig_path: "{{ kubeconfig_path }}"
-      wait: yes
       state: absent
-      release_name: argocd
-      release_namespace: argocd
+      wait: yes
+      release_name: ingress-nginx
+      release_namespace: ingress-nginx
+  - name: Uninstall cert-manager helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      state: absent
+      wait: yes
+      release_name: cert-manager
+      release_namespace: cert-manager
+  - name: Uninstall external-dns helm chart
+    kubernetes.core.helm:
+      kubeconfig_path: "{{ kubeconfig_path }}"
+      state: absent
+      wait: yes
+      release_name: external-dns
+      release_namespace: external-dns
   - name: Delete all PVs
     shell: "kubectl delete pv --all -A --kubeconfig {{ kubeconfig_path }}"
