@@ -6,3 +6,12 @@ metadata:
   namespace: loadtest
 spec:
   replicas: 5
+  template:
+    spec:
+      containers:
+        - name: load-test
+          image: technat/load-test
+          args:
+            - '-h https://alleaffengaffen.ch'
+            - '-c 5'
+            - '-r 12h'
