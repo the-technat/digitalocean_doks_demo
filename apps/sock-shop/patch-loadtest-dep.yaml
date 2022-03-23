@@ -5,7 +5,7 @@ metadata:
   name: load-test
   namespace: loadtest
 spec:
-  replicas: 5
+  replicas: 0
   template:
     spec:
       containers:
